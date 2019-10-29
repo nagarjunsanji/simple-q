@@ -1,0 +1,221 @@
+ES6 features in JavaScript
+-----------------------------------------
+const and let
+const (Constants) are block scoped ( only available in local scope). 
+You can’t reassign value of const variable but properties of const can be mutated for example
+
+>> const a = {namv : "Jhon Doe"}
+>> a = {  // this not allowedname : "Jen Doe"}
+>> a.name = "Jen Doe" // this allowed
+-----------------------------------------
+Template Strings
+Template String or Template literals are enclosed with ` (back-tick) . 
+You can embed variables in Template string just by surrounding variable by ${}, 
+Multi-line strings and many more features but to keep this guide simple for beginners I am not going go over every single feature of Template Strings instead let’s understand most of the features by comparing normal string with template strings.
+
+let a = 2
+let b = 3
+String old = "two plus three is : \n" + (a+b)
+>> two plus three is :
+>> 5
+String new = `two plus three is :
+              ${a+b}`
+>>two plus three is :
+>>5
+For more info on template strings take a look at this link.
+-----------------------------------------
+Arrow Functions
+Arrow functions are quicker and simpler way to write some of the regular function.
+
+for example for anonymous function
+
+function(e){ 
+console.log(e)
+return 1
+}           
+(e) => { // same as above
+console.log(e)
+return 1
+}
+-----------------------------------------
+named function
+
+const fun1 = function(name){
+    console.log(`Hello ${name}`)
+}
+const fun2 = (name) {
+    console.log(`Hello ${name}`)
+}
+>>fun1("Jhon")
+>>Jhon
+>>fun2("Jhon")
+>>Jhon
+-----------------------------------------
+Default argument
+Es6 provides default arguments for function. You can set default value of argument and if you pass value of that argument it will be overridden and if you don’t pass default value of that argument, default value will be taken for that argument. Let’s take an example for better understanding.
+
+const add = (a, b=5) =>{
+      console.log(a+b);
+}
+
+>>add(3,4)
+>>7
+>>add(3)
+>>8
+-----------------------------------------
+Import and export
+Import export are more important where modularity is essential. Usual syntax for import is import module from 'path/to/module' . Similarly, you can also export any module. let’s take an example for more clarification. Suppose there is two files one is sum.js containing method that return sum of two numbers and other is index.js where we want to sum two numbers.
+
+---------------------------sum.js-----------------------------------
+export default function sum(a,b){
+ return a+b
+}
+---------------------------index.js---------------------------------
+import sum from './sum' // no need to provide format of file
+console.log(sum(4,5))
+---------------------------console----------------------------------
+>>9
+There is lots of things that I have not covered here you can look up here and here for more information on import export.
+
+Class
+Classes in JavaScript are nothing but “special functions”. It does not introduce a new object-oriented inheritance model to JavaScript. To quote MDN blog “ classes are primarily syntactical sugar over JavaScript’s existing prototype-based inheritance.” Class gives your code nice structure and keep things neat.
+
+-------------------------Class Declaration-------------------------
+class Person{
+   constructor(name,age){ 
+    this.name = name
+    this.gender = gender 
+    this.age = age
+   }
+}
+const Jhon = new Person("Jhon Doe", "Male", 30)
+console.log(Jhon.age) // 30
+Jhon.age = 25
+console.log(Jhon.age) // 25
+Extend keyword is used for inheritance.
+
+class Animal{
+....
+}
+class Dog extends Animal{
+....
+}
+-----------------------------------------
+Promises
+Promises are JavaScript ways to execute asynchronous code. Promise takes two arguments resolve and reject to handle scenarios.
+
+const myFirstPromise = new Promise((resolve, reject) => {
+  // do something asynchronous which eventually calls either:
+  //
+  //   resolve(someValue); // fulfilled
+  // or
+  //   reject("failure reason"); // rejected
+});
+
+function myAsyncFunction(url) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.onload = () => resolve(xhr.responseText);
+    xhr.onerror = () => reject(xhr.statusText);
+    xhr.send();
+  });
+}
+Here is code-pan example of wait Promise. It waits for 5 second to excute asynchronous code.
+
+That’s All Folks. We have not covered many of the features of ES6 to keep this simple. You can always look up more features of ES6 on MDN blogs.
+
+As usual here is a some random programming humor to cheer up your day.
+
+-----------------------------------------
+Self invoking function
+
+There are a lot of interesting things in the syntax of JavaScript, one of which is the definition of self-executing (self-invoking) functions. Here’s how we can defined such function:
+
+(function () {
+  // body of the function
+}());
+The anonymous function above will be invoked right after it has been defined. The benefit of self-invoking functions is that they enable us to execute code once without cluttering the global namespace (without declaring any globals). For example, if we have a web page in which we want to attach event listeners to DOM elements and other initialization work, self-invoking functions would be the best tool for the job!
+
+How they actually work?
+
+Since the function is defined anonymously, there are leaked global nor even local variables except, of course, the variables declared inside the function’s body. We do not keep reference to the function, not even to its return value. After the function has been initialized, it is being immediately invoked.
+
+As we already mentioned, this is very convenient for executing initialization logic. Using self-invoking functions we will perform the initialization work only once because after the execution we’ll loose the reference to the function.
+-----------------------------------------
+call and apply
+
+var person1 = {name: 'Marvin', age: 42, size: '2xM'};
+var person2 = {name: 'Zaphod', age: 42000000000, size: '1xS'};
+
+var sayHello = function(greeting){
+    console.log(greeting + this.name);
+};
+
+var sayGoodbye = function(greeting, age){
+    console.log(greeting + this.name+ age);
+};
+
+sayHello.call(person1,'Hello '); // only few arguments saperated with camma
+
+sayGoodbye.apply(person2,['Hello ',25]); // array of arguments
+-----------------------------------------
+inheritance
+
+var ClassA = function() {
+    this.name = "class A";
+}
+
+ClassA.prototype.print = function() {
+    console.log(this.name);
+}
+
+var a = new ClassA();
+
+a.print();
+
+var inheritsFrom = function (child, parent) {
+    child.prototype = Object.create(parent.prototype);
+};
+
+var ClassB = function() {
+    this.name = "class B";
+    this.surname = "I'm the child";
+}
+
+inheritsFrom(ClassB, ClassA);
+
+var b = new ClassB();
+b.print();
+
+-----------------------------------------
+Creating Custom HTML Elements
+
+var XTreehouseElement = document.registerElement('x-treehouse');
+document.body.appendChild(new XTreehouseElement());
+
+<x-treehouse></x-treehouse>
+
+var XTreehouseProto = Object.create(HTMLElement.prototype);
+
+XTreehouseProto.hello = function() {
+    alert('Hello!');
+}
+
+Object.defineProperty(XTreehouseProto, 'badges', { 
+    value: 20,
+    writable : true
+});
+
+var XTreehouseElement = document.registerElement('x-treehouse',  { 
+    prototype: XTreehouseProto
+});
+
+var xtreehouse = new XTreehouseElement();
+document.body.appendChild(xtreehouse);
+
+xtreehouse.hello();
+var badges = xtreehouse.badges;
+-----------------------------------------
+CSS anotation
+@import, @extend, @keyframes
